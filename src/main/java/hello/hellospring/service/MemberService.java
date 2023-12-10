@@ -5,9 +5,12 @@ import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -23,7 +26,11 @@ public class MemberService {
         // 이름 중복 검증
         validateDuplicateMember(member);
 
-        memberRepository.save(member);
+        try {
+            memberRepository.save(member);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return member.getId();
     }
 
