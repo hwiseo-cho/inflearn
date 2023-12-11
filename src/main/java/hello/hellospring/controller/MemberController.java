@@ -19,7 +19,6 @@ public class MemberController {
 
     // 생성자 주입
     // 최근 권장하는 방법
-    @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }

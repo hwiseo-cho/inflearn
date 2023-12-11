@@ -2,9 +2,6 @@ package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
-import hello.hellospring.repository.MemoryMemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
@@ -19,19 +16,21 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+
     /**
      *  회원가입
      */
     public Long join(Member member) {
+
         // 이름 중복 검증
         validateDuplicateMember(member);
 
         try {
             memberRepository.save(member);
+            return member.getId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return member.getId();
     }
 
     private void validateDuplicateMember(Member member) {
